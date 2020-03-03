@@ -24,6 +24,7 @@ class BurgerBuilder extends Component {
         error: false
     }
     componentDidMount(){
+        console.log(this.props)
         axios.get('https://burgermakerreactproject.firebaseio.com/ingredients.json')
         .then(response => {
             this.setState({ingredients: response.data})
@@ -83,31 +84,15 @@ this.setState({
         this.setState({purchasing: false})
     }
     purchaseContinueHandler = () => {
-        // alert('continue')
-        this.setState({
-            loading: true
-        })
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name:'aswin',
-                address: {
-                    street: 'princes ave',
-                    postcode: '10456',
-                    country: 'NZ'
-                },
-            email: 'asdasdas@gmail.com'
-            },
-            deliveryMethod: 'express'
+        
+        const queryParams = []
+        for(let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
-        axios.post('/orders.json', order)
-        .then(response => console.log(response),
-        this.setState({loading: false, 
-        purchasing: false}))
-        .catch(error => console.log(error),
-        this.setState({loading: false,
-            purchasing: false}))
+        queryParams.push('price=' + this.state.totalPrice)
+        const queryString = queryParams.join('&')
+        this.props.history.push({pathname:'/checkout',
+    search: '?' + queryString})
     }
     render () {
         const disabledInfo = {
