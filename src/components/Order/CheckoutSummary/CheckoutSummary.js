@@ -9,8 +9,8 @@ return (
         <div style={{width:'100%', margin:'auto'}}>
             <Burger ingredients={props.ingredients}/>
         </div>
-        <Button clicked btnType='Danger'>Cancel</Button>
-        <Button clicked btnType='Success'>Continue</Button>
+        <Button clicked={props.checkoutCancel} btnType='Danger'>Cancel</Button>
+        <Button clicked={props.checkoutContinue} btnType='Success'>Continue</Button>
     </div>
 )
 }
